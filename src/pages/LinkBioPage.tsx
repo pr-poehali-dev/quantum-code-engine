@@ -328,7 +328,7 @@ export function LinkBioPage() {
                 onClick={() => { setExcludeUsed(v => !v); setUsedNumbers(new Set()) }}
                 className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
                 style={{
-                  background: excludeUsed ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
+                  background: excludeUsed ? "linear-gradient(135deg, #7c3aed, #db2777)" : isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.75)",
                 }}
               >
                 <div
