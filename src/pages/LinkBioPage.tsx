@@ -169,10 +169,10 @@ export function LinkBioPage() {
       <div className="fixed inset-0 z-0 bg-gradient-to-br from-[#0d0d1a] via-[#11101f] to-[#0a0a14]" />
 
       {/* Static gradient orbs */}
-      <div className="fixed z-0 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(147, 51, 234, 0.45) 0%, transparent 70%)", filter: "blur(60px)", top: "-10%", left: "-10%" }} />
-      <div className="fixed z-0 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(236, 72, 153, 0.4) 0%, transparent 70%)", filter: "blur(80px)", top: "30%", right: "-20%" }} />
-      <div className="fixed z-0 w-[450px] h-[450px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, transparent 70%)", filter: "blur(70px)", bottom: "-5%", left: "20%" }} />
-      <div className="fixed z-0 w-[350px] h-[350px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%)", filter: "blur(50px)", top: "60%", left: "-5%" }} />
+      <div className="fixed z-0 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(234, 179, 8, 0.45) 0%, transparent 70%)", filter: "blur(60px)", top: "-10%", left: "-10%" }} />
+      <div className="fixed z-0 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(251, 146, 60, 0.35) 0%, transparent 70%)", filter: "blur(80px)", top: "30%", right: "-20%" }} />
+      <div className="fixed z-0 w-[450px] h-[450px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(234, 179, 8, 0.3) 0%, transparent 70%)", filter: "blur(70px)", bottom: "-5%", left: "20%" }} />
+      <div className="fixed z-0 w-[350px] h-[350px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(253, 224, 71, 0.25) 0%, transparent 70%)", filter: "blur(50px)", top: "60%", left: "-5%" }} />
 
       {/* QR badge */}
       <AnimatePresence>
@@ -291,7 +291,7 @@ export function LinkBioPage() {
                 onClick={() => setNoRepeat(v => !v)}
                 className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
                 style={{
-                  background: noRepeat ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
+                  background: noRepeat ? "linear-gradient(135deg, #ca8a04, #eab308)" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <div
@@ -308,9 +308,9 @@ export function LinkBioPage() {
             <label
               className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
               style={{
-                background: excludeUsed ? "rgba(124,58,237,0.18)" : "rgba(255,255,255,0.06)",
+                background: excludeUsed ? "rgba(234,179,8,0.12)" : "rgba(255,255,255,0.06)",
                 backdropFilter: "blur(30px)",
-                border: excludeUsed ? "1px solid rgba(124,58,237,0.4)" : "1px solid rgba(255,255,255,0.1)",
+                border: excludeUsed ? "1px solid rgba(234,179,8,0.35)" : "1px solid rgba(255,255,255,0.1)",
                 boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
               }}
             >
@@ -318,7 +318,7 @@ export function LinkBioPage() {
                 onClick={() => { setExcludeUsed(v => !v); setUsedNumbers(new Set()) }}
                 className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
                 style={{
-                  background: excludeUsed ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
+                  background: excludeUsed ? "linear-gradient(135deg, #ca8a04, #eab308)" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <div
@@ -329,7 +329,7 @@ export function LinkBioPage() {
               <div>
                 <div className="text-sm text-gray-200 font-medium leading-tight">До последнего числа</div>
                 {excludeUsed && usedNumbers.size > 0 && (
-                  <div className="text-[11px] text-purple-500 mt-0.5">использовано: {usedNumbers.size}</div>
+                  <div className="text-[11px] text-yellow-400 mt-0.5">использовано: {usedNumbers.size}</div>
                 )}
               </div>
             </label>
@@ -384,12 +384,12 @@ export function LinkBioPage() {
             <motion.button
               onClick={handleRoll}
               disabled={rolling}
-              className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-70"
+              className="w-full rounded-[20px] py-4 text-gray-900 font-semibold text-[15px] tracking-tight disabled:opacity-70"
               style={{
                 background: rolling
-                  ? "linear-gradient(135deg, #a855f7, #ec4899)"
-                  : "linear-gradient(135deg, #7c3aed, #db2777)",
-                boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
+                  ? "linear-gradient(135deg, #d97706, #eab308)"
+                  : "linear-gradient(135deg, #ca8a04, #eab308)",
+                boxShadow: "0 8px 24px rgba(234,179,8,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
               }}
               whileHover={!rolling ? { scale: 1.02, y: -2 } : {}}
               whileTap={!rolling ? { scale: 0.98, y: 0 } : {}}
@@ -417,10 +417,10 @@ export function LinkBioPage() {
               </div>
             </div>
             <div
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-purple-300"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-yellow-300"
               style={{
-                background: "rgba(124,58,237,0.2)",
-                border: "1px solid rgba(124,58,237,0.35)",
+                background: "rgba(234,179,8,0.15)",
+                border: "1px solid rgba(234,179,8,0.35)",
               }}
             >
               {tzLabel}
