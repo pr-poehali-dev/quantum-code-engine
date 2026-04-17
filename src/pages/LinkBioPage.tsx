@@ -86,7 +86,7 @@ export function LinkBioPage() {
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
   const [count, setCount] = useState("1")
-  const [noRepeat, setNoRepeat] = useState(false)
+  const [sortAsc, setSortAsc] = useState(false)
   const [excludeUsed, setExcludeUsed] = useState(false)
   const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set())
   const [results, setResults] = useState<number[]>([])
@@ -137,15 +137,9 @@ export function LinkBioPage() {
     setDisplayNumbers([])
 
     let final: number[]
-    if (noRepeat) {
-      const shuffled = [...pool]
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-      }
-      final = shuffled.slice(0, countNum)
-    } else {
-      final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
+    final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
+    if (sortAsc) {
+      final = [...final].sort((a, b) => a - b)
     }
 
     const totalDuration = 1800
@@ -284,30 +278,30 @@ export function LinkBioPage() {
             </div>
           </motion.div>
 
-          {/* Без повторов */}
+          {/* По возрастанию */}
           <motion.div variants={itemVariants}>
             <label
               className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
               style={{
-                background: "rgba(255,255,255,0.06)",
+                background: sortAsc ? "rgba(124,58,237,0.18)" : "rgba(255,255,255,0.06)",
                 backdropFilter: "blur(30px)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                border: sortAsc ? "1px solid rgba(124,58,237,0.4)" : "1px solid rgba(255,255,255,0.1)",
                 boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
               }}
             >
               <div
-                onClick={() => setNoRepeat(v => !v)}
+                onClick={() => setSortAsc(v => !v)}
                 className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
                 style={{
-                  background: noRepeat ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
+                  background: sortAsc ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <div
                   className="absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all duration-200"
-                  style={{ left: noRepeat ? "calc(100% - 20px)" : "4px" }}
+                  style={{ left: sortAsc ? "calc(100% - 20px)" : "4px" }}
                 />
               </div>
-              <span className="text-sm text-gray-200 font-medium">Без повторов</span>
+              <span className="text-sm text-gray-200 font-medium">По возрастанию</span>
             </label>
           </motion.div>
 
