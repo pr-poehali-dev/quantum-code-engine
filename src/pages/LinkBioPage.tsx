@@ -345,6 +345,22 @@ export function LinkBioPage() {
             </label>
           </motion.div>
 
+          {/* Создать розыгрыш */}
+          <motion.div variants={itemVariants}>
+            <motion.button
+              className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight"
+              style={{
+                background: "linear-gradient(135deg, #7c3aed, #db2777)",
+                boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
+              }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98, y: 0 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            >
+              🏆 Создать розыгрыш
+            </motion.button>
+          </motion.div>
+
           {/* Error */}
           {error && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-sm text-red-400">
