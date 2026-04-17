@@ -418,6 +418,49 @@ export function LinkBioPage() {
               {rolling ? "Выбираем..." : "🎲 Разыграть"}
             </motion.button>
           </motion.div>
+
+          {/* Время проведения */}
+          <motion.div variants={itemVariants} className="flex gap-3">
+            <div className="flex-1">
+              <label className="block text-xs text-gray-500 mb-1 pl-1">Дата и время</label>
+              <input
+                type="datetime-local"
+                className="w-full rounded-[16px] px-4 py-3 text-gray-800 text-sm outline-none"
+                style={{
+                  background: "rgba(255,255,255,0.55)",
+                  backdropFilter: "blur(30px)",
+                  border: "1px solid rgba(255,255,255,0.6)",
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
+                }}
+              />
+            </div>
+            <div className="w-28">
+              <label className="block text-xs text-gray-500 mb-1 pl-1">Часовой пояс</label>
+              <select
+                className="w-full rounded-[16px] px-3 py-3 text-gray-800 text-sm outline-none appearance-none"
+                style={{
+                  background: "rgba(255,255,255,0.55)",
+                  backdropFilter: "blur(30px)",
+                  border: "1px solid rgba(255,255,255,0.6)",
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
+                }}
+              >
+                <option value="UTC+2">UTC+2</option>
+                <option value="UTC+3" selected>UTC+3 МСК</option>
+                <option value="UTC+4">UTC+4</option>
+                <option value="UTC+5">UTC+5</option>
+                <option value="UTC+6">UTC+6</option>
+                <option value="UTC+7">UTC+7</option>
+                <option value="UTC+8">UTC+8</option>
+                <option value="UTC+9">UTC+9</option>
+                <option value="UTC+10">UTC+10</option>
+                <option value="UTC+11">UTC+11</option>
+                <option value="UTC+12">UTC+12</option>
+                <option value="UTC+0">UTC+0</option>
+                <option value="UTC-1">UTC-1</option>
+              </select>
+            </div>
+          </motion.div>
         </motion.div>
 
         <motion.div variants={itemVariants} className="pb-2">
