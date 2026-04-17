@@ -84,6 +84,8 @@ function SpinningNumbers({ isDark, numColor }: { isDark: boolean; numColor: stri
 
 export function LinkBioPage() {
   const [isDark, setIsDark] = useState(true)
+  const [isReady, setIsReady] = useState(false)
+  const [isCreating, setIsCreating] = useState(false)
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
   const [count, setCount] = useState("1")
@@ -107,6 +109,14 @@ export function LinkBioPage() {
   const dateStr = now.toLocaleDateString("ru-RU", { timeZone: userTimezone, day: "numeric", month: "long", year: "numeric" })
   const tzOffset = -now.getTimezoneOffset() / 60
   const tzLabel = `UTC${tzOffset >= 0 ? "+" : ""}${tzOffset}`
+
+  function handleCreate() {
+    setIsCreating(true)
+    setTimeout(() => {
+      setIsCreating(false)
+      setIsReady(true)
+    }, 5000)
+  }
 
   function handleRoll() {
     const minNum = parseInt(min)
@@ -259,7 +269,11 @@ export function LinkBioPage() {
           <p className={`mt-2 text-sm ${theme.subText}`}>Честный и прозрачный розыгрыш за секунды 🎲</p>
         </motion.div>
 
-        <motion.div className="py-8 space-y-4" variants={containerVariants}>
+        <motion.div
+          className="py-8 space-y-4"
+          variants={containerVariants}
+          style={{ pointerEvents: isReady ? "auto" : "none", opacity: isReady ? 1 : 0.35, transition: "opacity 0.5s" }}
+        >
           {/* Диапазон */}
           <motion.div variants={itemVariants} className="flex gap-3">
             <div className="flex-1">
@@ -346,20 +360,38 @@ export function LinkBioPage() {
           </motion.div>
 
           {/* Создать розыгрыш */}
-          <motion.div variants={itemVariants}>
-            <motion.button
-              className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight"
-              style={{
-                background: "linear-gradient(135deg, #7c3aed, #db2777)",
-                boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
-              }}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98, y: 0 }}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            >
-              🏆 Создать розыгрыш
-            </motion.button>
-          </motion.div>
+          <AnimatePresence mode="wait">
+            {!isReady && (
+              <motion.div variants={itemVariants} key="create-btn">
+                <motion.button
+                  onClick={handleCreate}
+                  disabled={isCreating}
+                  className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-80"
+                  style={{
+                    background: "linear-gradient(135deg, #7c3aed, #db2777)",
+                    boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
+                  }}
+                  whileHover={!isCreating ? { scale: 1.02, y: -2 } : {}}
+                  whileTap={!isCreating ? { scale: 0.98, y: 0 } : {}}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                >
+                  {isCreating ? (
+                    <span className="flex items-center justify-center gap-1">
+                      <span>Создаём розыгрыш</span>
+                      {[0, 1, 2].map(i => (
+                        <motion.span
+                          key={i}
+                          animate={{ opacity: [0, 1, 0] }}
+                          transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
+                          className="inline-block"
+                        >·</motion.span>
+                      ))}
+                    </span>
+                  ) : "🏆 Создать розыгрыш"}
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Error */}
           {error && (
