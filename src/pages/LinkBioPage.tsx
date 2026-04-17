@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ProfileSection } from "@/components/ProfileSection"
 import { SocialFooter } from "@/components/SocialFooter"
@@ -91,6 +91,17 @@ export function LinkBioPage() {
   const [results, setResults] = useState<number[]>([])
   const [rolling, setRolling] = useState(false)
   const [error, setError] = useState("")
+
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  const [now, setNow] = useState(new Date())
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+  const timeStr = now.toLocaleTimeString("ru-RU", { timeZone: userTimezone, hour: "2-digit", minute: "2-digit", second: "2-digit" })
+  const dateStr = now.toLocaleDateString("ru-RU", { timeZone: userTimezone, day: "numeric", month: "long", year: "numeric" })
+  const tzOffset = -now.getTimezoneOffset() / 60
+  const tzLabel = `UTC${tzOffset >= 0 ? "+" : ""}${tzOffset}`
 
   function handleRoll() {
     const minNum = parseInt(min)
@@ -420,45 +431,30 @@ export function LinkBioPage() {
           </motion.div>
 
           {/* Время проведения */}
-          <motion.div variants={itemVariants} className="flex gap-3">
-            <div className="flex-1">
-              <label className="block text-xs text-gray-500 mb-1 pl-1">Дата и время</label>
-              <input
-                type="datetime-local"
-                className="w-full rounded-[16px] px-4 py-3 text-gray-800 text-sm outline-none"
-                style={{
-                  background: "rgba(255,255,255,0.55)",
-                  backdropFilter: "blur(30px)",
-                  border: "1px solid rgba(255,255,255,0.6)",
-                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
-                }}
-              />
+          <motion.div
+            variants={itemVariants}
+            className="flex items-center justify-between rounded-[20px] px-5 py-4"
+            style={{
+              background: "rgba(255,255,255,0.45)",
+              backdropFilter: "blur(40px) saturate(180%)",
+              border: "1px solid rgba(255,255,255,0.5)",
+              boxShadow: "inset 0 1px 1px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
+            }}
+          >
+            <div>
+              <div className="text-[11px] text-gray-400 mb-0.5">{dateStr}</div>
+              <div className="text-2xl font-bold text-gray-800 tracking-tight" style={{ fontVariantNumeric: "tabular-nums" }}>
+                {timeStr}
+              </div>
             </div>
-            <div className="w-28">
-              <label className="block text-xs text-gray-500 mb-1 pl-1">Часовой пояс</label>
-              <select
-                className="w-full rounded-[16px] px-3 py-3 text-gray-800 text-sm outline-none appearance-none"
-                style={{
-                  background: "rgba(255,255,255,0.55)",
-                  backdropFilter: "blur(30px)",
-                  border: "1px solid rgba(255,255,255,0.6)",
-                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
-                }}
-              >
-                <option value="UTC+2">UTC+2</option>
-                <option value="UTC+3" selected>UTC+3 МСК</option>
-                <option value="UTC+4">UTC+4</option>
-                <option value="UTC+5">UTC+5</option>
-                <option value="UTC+6">UTC+6</option>
-                <option value="UTC+7">UTC+7</option>
-                <option value="UTC+8">UTC+8</option>
-                <option value="UTC+9">UTC+9</option>
-                <option value="UTC+10">UTC+10</option>
-                <option value="UTC+11">UTC+11</option>
-                <option value="UTC+12">UTC+12</option>
-                <option value="UTC+0">UTC+0</option>
-                <option value="UTC-1">UTC-1</option>
-              </select>
+            <div
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-gray-600"
+              style={{
+                background: "rgba(124,58,237,0.08)",
+                border: "1px solid rgba(124,58,237,0.15)",
+              }}
+            >
+              {tzLabel}
             </div>
           </motion.div>
         </motion.div>
