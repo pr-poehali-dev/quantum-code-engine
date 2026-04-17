@@ -123,10 +123,7 @@ export function LinkBioPage() {
     const pool = Array.from({ length: rangeSize }, (_, i) => minNum + i)
       .filter(n => !excludeUsed || !usedNumbers.has(n))
 
-    if (noRepeat && countNum > pool.length) {
-      setError(`Без повторов можно выбрать максимум ${pool.length} чисел из доступных`)
-      return
-    }
+
     if (excludeUsed && pool.length === 0) {
       setError("Все числа из диапазона уже были использованы")
       return
