@@ -65,7 +65,9 @@ export function RaffleForm({
     <motion.div
       className="py-8 space-y-4"
       variants={containerVariants}
-      style={{ pointerEvents: isReady ? "auto" : "none", opacity: isReady ? 1 : 0.35, transition: "opacity 0.5s" }}
+      animate={{ opacity: isReady ? 1 : 0.35 }}
+      transition={{ duration: 0.5 }}
+      style={{ pointerEvents: isReady ? "auto" : "none" }}
     >
       {/* Диапазон */}
       <motion.div variants={itemVariants} className="flex gap-3">
