@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Sun, Moon, MessageSquare, Info } from "lucide-react"
 import { SocialFooter } from "@/components/SocialFooter"
 import { SpinningNumbers } from "@/components/SpinningNumbers"
@@ -164,11 +164,48 @@ export function LinkBioPage() {
           <p className={`mt-2 text-sm ${theme.subText}`}>Честный и прозрачный розыгрыш за секунды 🎲</p>
         </motion.div>
 
+        {/* Кнопка создать розыгрыш — вне блокирующего контейнера */}
+        <AnimatePresence mode="wait">
+          {!isReady && (
+            <motion.div
+              key="create-btn"
+              variants={itemVariants}
+              className="mt-8"
+            >
+              <motion.button
+                onClick={handleCreate}
+                disabled={isCreating}
+                className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-80"
+                style={{
+                  background: "linear-gradient(135deg, #7c3aed, #db2777)",
+                  boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
+                }}
+                whileHover={!isCreating ? { scale: 1.02, y: -2 } : {}}
+                whileTap={!isCreating ? { scale: 0.98, y: 0 } : {}}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              >
+                {isCreating ? (
+                  <span className="flex items-center justify-center gap-1">
+                    <span>Создаём розыгрыш</span>
+                    {[0, 1, 2].map(i => (
+                      <motion.span
+                        key={i}
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
+                        className="inline-block"
+                      >·</motion.span>
+                    ))}
+                  </span>
+                ) : "🏆 Создать розыгрыш"}
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <RaffleForm
           theme={theme}
           isDark={isDark}
           isReady={isReady}
-          isCreating={isCreating}
           min={min}
           max={max}
           count={count}
@@ -184,7 +221,6 @@ export function LinkBioPage() {
           onMaxChange={setMax}
           onCountChange={setCount}
           onToggleExclude={() => { setExcludeUsed(v => !v); setUsedNumbers(new Set()) }}
-          onCreate={handleCreate}
           onRoll={handleRoll}
         />
 

@@ -22,7 +22,6 @@ interface RaffleFormProps {
   theme: Theme
   isDark: boolean
   isReady: boolean
-  isCreating: boolean
   min: string
   max: string
   count: string
@@ -38,7 +37,6 @@ interface RaffleFormProps {
   onMaxChange: (v: string) => void
   onCountChange: (v: string) => void
   onToggleExclude: () => void
-  onCreate: () => void
   onRoll: () => void
 }
 
@@ -46,7 +44,6 @@ export function RaffleForm({
   theme,
   isDark,
   isReady,
-  isCreating,
   min,
   max,
   count,
@@ -62,7 +59,6 @@ export function RaffleForm({
   onMaxChange,
   onCountChange,
   onToggleExclude,
-  onCreate,
   onRoll,
 }: RaffleFormProps) {
   return (
@@ -155,40 +151,6 @@ export function RaffleForm({
           </div>
         </label>
       </motion.div>
-
-      {/* Создать розыгрыш */}
-      <AnimatePresence mode="wait">
-        {!isReady && (
-          <motion.div variants={itemVariants} key="create-btn">
-            <motion.button
-              onClick={onCreate}
-              disabled={isCreating}
-              className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-80"
-              style={{
-                background: "linear-gradient(135deg, #7c3aed, #db2777)",
-                boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
-              }}
-              whileHover={!isCreating ? { scale: 1.02, y: -2 } : {}}
-              whileTap={!isCreating ? { scale: 0.98, y: 0 } : {}}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            >
-              {isCreating ? (
-                <span className="flex items-center justify-center gap-1">
-                  <span>Создаём розыгрыш</span>
-                  {[0, 1, 2].map(i => (
-                    <motion.span
-                      key={i}
-                      animate={{ opacity: [0, 1, 0] }}
-                      transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
-                      className="inline-block"
-                    >·</motion.span>
-                  ))}
-                </span>
-              ) : "🏆 Создать розыгрыш"}
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Error */}
       {error && (
