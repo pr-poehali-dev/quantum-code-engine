@@ -136,32 +136,21 @@ export function LinkBioPage() {
     const final: number[] = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
 
 
-    const totalDuration = 1800
-    const intervalMs = 80
-    const steps = Math.floor(totalDuration / intervalMs)
-    let step = 0
-    const ticker = setInterval(() => {
-      setDisplayNumbers(final.map(() => pool[Math.floor(Math.random() * pool.length)]))
-      step++
-      if (step >= steps) {
-        clearInterval(ticker)
-        setDisplayNumbers(final)
-        setResults(final)
-        setShowQr(false)
-        if (excludeUsed) {
-          const newUsed = new Set([...usedNumbers, ...final])
-          setUsedNumbers(newUsed)
-          const rangeTotal = maxNum - minNum + 1
-          if (newUsed.size >= rangeTotal) {
-            setIsLastNumber(true)
-            setShowQr(true)
-          } else {
-            setIsLastNumber(false)
-          }
-        }
-        setRolling(false)
+    setDisplayNumbers(final)
+    setResults(final)
+    setShowQr(false)
+    if (excludeUsed) {
+      const newUsed = new Set([...usedNumbers, ...final])
+      setUsedNumbers(newUsed)
+      const rangeTotal = maxNum - minNum + 1
+      if (newUsed.size >= rangeTotal) {
+        setIsLastNumber(true)
+        setShowQr(true)
+      } else {
+        setIsLastNumber(false)
       }
-    }, intervalMs)
+    }
+    setRolling(false)
   }
 
   return (
@@ -323,27 +312,42 @@ export function LinkBioPage() {
               minHeight: 120,
             }}
           >
-            {displayNumbers.length > 0 ? (
-              displayNumbers.map((num, i) => (
-                <motion.span
-                  key={rolling ? `roll-${i}-${num}` : `final-${i}`}
-                  initial={rolling ? { opacity: 0, y: -10 } : { opacity: 0, scale: 0.7 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={rolling ? { duration: 0.05 } : { type: "spring", stiffness: 400, damping: 20 }}
-                  className="font-bold tracking-tight"
-                  style={{
-                    fontSize: displayNumbers.length === 1 ? "5rem" : displayNumbers.length <= 4 ? "3rem" : "1.75rem",
-                    fontVariantNumeric: "tabular-nums",
-                    lineHeight: 1.1,
-                    color: rolling ? "rgba(167,139,250,0.6)" : "#a78bfa",
-                  }}
+            <AnimatePresence mode="wait">
+              {displayNumbers.length > 0 ? (
+                <motion.div
+                  key={displayNumbers.join(",")}
+                  initial={{ opacity: 0, y: -30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="flex flex-wrap items-center justify-center gap-3"
                 >
-                  {num}
+                  {displayNumbers.map((num, i) => (
+                    <span
+                      key={i}
+                      className="font-bold tracking-tight"
+                      style={{
+                        fontSize: displayNumbers.length === 1 ? "5rem" : displayNumbers.length <= 4 ? "3rem" : "1.75rem",
+                        fontVariantNumeric: "tabular-nums",
+                        lineHeight: 1.1,
+                        color: "#a78bfa",
+                      }}
+                    >
+                      {num}
+                    </span>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.span
+                  key="placeholder"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-3xl text-gray-600 font-light"
+                >
+                  ?
                 </motion.span>
-              ))
-            ) : (
-              <span className="text-3xl text-gray-600 font-light">?</span>
-            )}
+              )}
+            </AnimatePresence>
           </motion.div>
 
           {/* Button */}
