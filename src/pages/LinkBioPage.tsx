@@ -93,6 +93,8 @@ export function LinkBioPage() {
   const [results, setResults] = useState<number[]>([])
   const [rolling, setRolling] = useState(false)
   const [error, setError] = useState("")
+  const [showQr, setShowQr] = useState(false)
+  const [isLastNumber, setIsLastNumber] = useState(false)
 
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const [now, setNow] = useState(new Date())
@@ -146,8 +148,17 @@ export function LinkBioPage() {
         final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
       }
       setResults(final)
+      setShowQr(false)
       if (excludeUsed) {
-        setUsedNumbers(prev => new Set([...prev, ...final]))
+        const newUsed = new Set([...usedNumbers, ...final])
+        setUsedNumbers(newUsed)
+        const rangeTotal = maxNum - minNum + 1
+        if (newUsed.size >= rangeTotal) {
+          setIsLastNumber(true)
+          setShowQr(true)
+        } else {
+          setIsLastNumber(false)
+        }
       }
       setRolling(false)
     }, 600)
@@ -284,6 +295,42 @@ export function LinkBioPage() {
           opacity: 0.025,
         }}
       />
+
+      {/* QR badge */}
+      <AnimatePresence>
+        {showQr && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: -20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: -20 }}
+            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+            className="fixed top-4 left-4 z-50 cursor-pointer"
+            onClick={() => setShowQr(v => !v)}
+            title="QR для скачивания результата"
+          >
+            <div
+              className="rounded-[18px] p-3 flex flex-col items-center gap-2"
+              style={{
+                background: "rgba(255,255,255,0.75)",
+                backdropFilter: "blur(30px)",
+                border: "1px solid rgba(255,255,255,0.7)",
+                boxShadow: "0 8px 32px rgba(124,58,237,0.2), inset 0 1px 2px rgba(255,255,255,0.9)",
+              }}
+            >
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(
+                  `Результат розыгрыша: ${results.join(", ")}\nДата: ${dateStr} ${timeStr} ${tzLabel}`
+                )}`}
+                alt="QR результата"
+                width={80}
+                height={80}
+                className="rounded-lg"
+              />
+              <span className="text-[10px] text-gray-500 font-medium">Результат</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <motion.div
         initial="hidden"
