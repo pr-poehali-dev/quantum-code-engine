@@ -51,9 +51,9 @@ function SpinningNumbers() {
       style={{
         width: 96,
         height: 96,
-        background: "rgba(234,179,8,0.12)",
+        background: "rgba(124,58,237,0.15)",
         backdropFilter: "blur(20px)",
-        boxShadow: "inset 0 1px 2px rgba(234,179,8,0.2), 0 0 0 1.5px rgba(234,179,8,0.35), 0 8px 32px rgba(234,179,8,0.15)",
+        boxShadow: "inset 0 1px 2px rgba(124,58,237,0.2), 0 0 0 1.5px rgba(124,58,237,0.4), 0 8px 32px rgba(124,58,237,0.2)",
       }}
     >
       {cols.map((col, ci) => (
@@ -66,7 +66,7 @@ function SpinningNumbers() {
             {[...digits, ...digits].map((d, i) => (
               <div
                 key={i}
-                className="flex items-center justify-center font-bold text-yellow-300"
+                className="flex items-center justify-center font-bold text-purple-300"
                 style={{ height: 28, fontSize: 18, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
               >
                 {d}
@@ -300,7 +300,7 @@ export function LinkBioPage() {
                 onClick={() => setNoRepeat(v => !v)}
                 className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
                 style={{
-                  background: noRepeat ? "linear-gradient(135deg, #ca8a04, #eab308)" : "rgba(255,255,255,0.12)",
+                  background: noRepeat ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <div
@@ -317,9 +317,9 @@ export function LinkBioPage() {
             <label
               className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
               style={{
-                background: excludeUsed ? "rgba(234,179,8,0.12)" : "rgba(255,255,255,0.06)",
+                background: excludeUsed ? "rgba(124,58,237,0.18)" : "rgba(255,255,255,0.06)",
                 backdropFilter: "blur(30px)",
-                border: excludeUsed ? "1px solid rgba(234,179,8,0.35)" : "1px solid rgba(255,255,255,0.1)",
+                border: excludeUsed ? "1px solid rgba(124,58,237,0.4)" : "1px solid rgba(255,255,255,0.1)",
                 boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
               }}
             >
@@ -327,7 +327,7 @@ export function LinkBioPage() {
                 onClick={() => { setExcludeUsed(v => !v); setUsedNumbers(new Set()) }}
                 className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
                 style={{
-                  background: excludeUsed ? "linear-gradient(135deg, #ca8a04, #eab308)" : "rgba(255,255,255,0.12)",
+                  background: excludeUsed ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
                 }}
               >
                 <div
@@ -338,7 +338,7 @@ export function LinkBioPage() {
               <div>
                 <div className="text-sm text-gray-200 font-medium leading-tight">До последнего числа</div>
                 {excludeUsed && usedNumbers.size > 0 && (
-                  <div className="text-[11px] text-yellow-400 mt-0.5">использовано: {usedNumbers.size}</div>
+                  <div className="text-[11px] text-purple-400 mt-0.5">использовано: {usedNumbers.size}</div>
                 )}
               </div>
             </label>
@@ -375,7 +375,7 @@ export function LinkBioPage() {
                     fontSize: displayNumbers.length === 1 ? "5rem" : displayNumbers.length <= 4 ? "3rem" : "1.75rem",
                     fontVariantNumeric: "tabular-nums",
                     lineHeight: 1.1,
-                    color: rolling ? "rgba(234,179,8,0.6)" : "#eab308",
+                    color: rolling ? "rgba(167,139,250,0.6)" : "#a78bfa",
                   }}
                 >
                   {num}
@@ -391,12 +391,12 @@ export function LinkBioPage() {
             <motion.button
               onClick={handleRoll}
               disabled={rolling}
-              className="w-full rounded-[20px] py-4 text-gray-900 font-semibold text-[15px] tracking-tight disabled:opacity-70"
+              className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-70"
               style={{
                 background: rolling
-                  ? "linear-gradient(135deg, #d97706, #eab308)"
-                  : "linear-gradient(135deg, #ca8a04, #eab308)",
-                boxShadow: "0 8px 24px rgba(234,179,8,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
+                  ? "linear-gradient(135deg, #a855f7, #ec4899)"
+                  : "linear-gradient(135deg, #7c3aed, #db2777)",
+                boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
               }}
               whileHover={!rolling ? { scale: 1.02, y: -2 } : {}}
               whileTap={!rolling ? { scale: 0.98, y: 0 } : {}}
@@ -424,10 +424,10 @@ export function LinkBioPage() {
               </div>
             </div>
             <div
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-yellow-300"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-purple-300"
               style={{
-                background: "rgba(234,179,8,0.15)",
-                border: "1px solid rgba(234,179,8,0.35)",
+                background: "rgba(124,58,237,0.2)",
+                border: "1px solid rgba(124,58,237,0.35)",
               }}
             >
               {tzLabel}
