@@ -67,34 +67,21 @@ export function LinkBioPage() {
     setRolling(true)
     setResults([])
 
-    let tick = 0
-    const totalTicks = 20
-    const interval = setInterval(() => {
-      const fake: number[] = []
-      for (let i = 0; i < countNum; i++) {
-        fake.push(Math.floor(Math.random() * rangeSize) + minNum)
-      }
-      setResults(fake)
-      tick++
-      if (tick >= totalTicks) {
-        clearInterval(interval)
-        if (noRepeat) {
-          const pool = Array.from({ length: rangeSize }, (_, i) => minNum + i)
-          for (let i = pool.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [pool[i], pool[j]] = [pool[j], pool[i]]
-          }
-          setResults(pool.slice(0, countNum))
-        } else {
-          const final: number[] = []
-          for (let i = 0; i < countNum; i++) {
-            final.push(Math.floor(Math.random() * rangeSize) + minNum)
-          }
-          setResults(final)
+    setTimeout(() => {
+      let final: number[]
+      if (noRepeat) {
+        const pool = Array.from({ length: rangeSize }, (_, i) => minNum + i)
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]]
         }
-        setRolling(false)
+        final = pool.slice(0, countNum)
+      } else {
+        final = Array.from({ length: countNum }, () => Math.floor(Math.random() * rangeSize) + minNum)
       }
-    }, 60)
+      setResults(final)
+      setRolling(false)
+    }, 600)
   }
 
   return (
