@@ -73,7 +73,8 @@ export function RaffleForm({
           <input
             type="number"
             value={min}
-            onChange={e => onMinChange(e.target.value)}
+            onChange={e => !isReady && onMinChange(e.target.value)}
+            readOnly={isReady}
             placeholder="1"
             className={`w-full rounded-[16px] px-4 py-3 text-center ${theme.inputText} font-semibold text-lg outline-none ${theme.inputPlaceholder}`}
             style={{
@@ -81,6 +82,7 @@ export function RaffleForm({
               backdropFilter: "blur(30px)",
               border: `1px solid ${theme.inputBorder}`,
               boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.1)",
+              cursor: isReady ? "default" : "text",
             }}
           />
         </div>
@@ -89,7 +91,8 @@ export function RaffleForm({
           <input
             type="number"
             value={max}
-            onChange={e => onMaxChange(e.target.value)}
+            onChange={e => !isReady && onMaxChange(e.target.value)}
+            readOnly={isReady}
             placeholder="100"
             className={`w-full rounded-[16px] px-4 py-3 text-center ${theme.inputText} font-semibold text-lg outline-none ${theme.inputPlaceholder}`}
             style={{
@@ -97,6 +100,7 @@ export function RaffleForm({
               backdropFilter: "blur(30px)",
               border: `1px solid ${theme.inputBorder}`,
               boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.1)",
+              cursor: isReady ? "default" : "text",
             }}
           />
         </div>
@@ -127,7 +131,7 @@ export function RaffleForm({
       {/* Без повторов */}
       <motion.div variants={itemVariants}>
         <label
-          className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
+          className={`flex items-center gap-3 rounded-[16px] px-4 py-3 select-none ${isReady ? "cursor-default" : "cursor-pointer"}`}
           style={{
             background: excludeUsed ? "rgba(124,58,237,0.18)" : theme.cardBg,
             backdropFilter: "blur(30px)",
@@ -136,7 +140,7 @@ export function RaffleForm({
           }}
         >
           <div
-            onClick={onToggleExclude}
+            onClick={() => !isReady && onToggleExclude()}
             className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
             style={{
               background: excludeUsed ? "linear-gradient(135deg, #7c3aed, #db2777)" : isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.75)",
