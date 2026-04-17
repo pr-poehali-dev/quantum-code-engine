@@ -37,6 +37,52 @@ const itemVariants = {
   },
 }
 
+function SpinningNumbers() {
+  const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  const cols = [
+    { duration: 1.4, delay: 0 },
+    { duration: 1.8, delay: 0.15 },
+    { duration: 1.2, delay: 0.3 },
+  ]
+
+  return (
+    <div
+      className="relative flex items-center justify-center gap-2 rounded-full overflow-hidden"
+      style={{
+        width: 96,
+        height: 96,
+        background: "rgba(255,255,255,0.6)",
+        backdropFilter: "blur(20px)",
+        boxShadow: "inset 0 2px 4px rgba(255,255,255,0.9), 0 0 0 2px rgba(255,255,255,0.6), 0 8px 32px rgba(120,119,198,0.15)",
+      }}
+    >
+      {cols.map((col, ci) => (
+        <div key={ci} className="overflow-hidden" style={{ height: 28 }}>
+          <motion.div
+            animate={{ y: [0, -28 * digits.length] }}
+            transition={{ duration: col.duration, delay: col.delay, repeat: Infinity, ease: "linear" }}
+            style={{ willChange: "transform" }}
+          >
+            {[...digits, ...digits].map((d, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-center font-bold text-gray-700"
+                style={{ height: 28, fontSize: 18, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
+              >
+                {d}
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      ))}
+
+      {/* fade top/bottom */}
+      <div className="absolute inset-x-0 top-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.9), transparent)" }} />
+      <div className="absolute inset-x-0 bottom-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(255,255,255,0.9), transparent)" }} />
+    </div>
+  )
+}
+
 export function LinkBioPage() {
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
@@ -222,12 +268,10 @@ export function LinkBioPage() {
         variants={containerVariants}
         className="relative z-10 mx-auto max-w-[400px] w-full flex flex-col flex-1 justify-between"
       >
-        <motion.div variants={itemVariants} className="pt-2">
-          <ProfileSection
-            name="Розыгрыш призов"
-            bio="Участвуй и выигрывай ценные призы от нашей компании 🎉"
-            imageUrl="/images/544291433-18043960274659947-5766591717842883293-n.jpg"
-          />
+        <motion.div variants={itemVariants} className="pt-2 flex flex-col items-center text-center">
+          <SpinningNumbers />
+          <h1 className="mt-5 text-xl font-semibold tracking-tight text-gray-800">Розыгрыш призов</h1>
+          <p className="mt-2 text-sm text-gray-500">Участвуй и выигрывай ценные призы от нашей компании 🎉</p>
         </motion.div>
 
         <motion.div className="py-8 space-y-4" variants={containerVariants}>
