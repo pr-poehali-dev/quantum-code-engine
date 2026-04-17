@@ -68,7 +68,11 @@ export function RaffleForm({
     >
       {/* Диапазон */}
       <motion.div variants={itemVariants} className="flex gap-3">
-        <div className="flex-1">
+        <motion.div
+          className="flex-1"
+          animate={{ opacity: isReady ? 0.35 : 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <label className={`block text-xs ${theme.labelText} mb-1 pl-1`}>От</label>
           <input
             type="number"
@@ -85,8 +89,12 @@ export function RaffleForm({
               cursor: isReady ? "default" : "text",
             }}
           />
-        </div>
-        <div className="flex-1">
+        </motion.div>
+        <motion.div
+          className="flex-1"
+          animate={{ opacity: isReady ? 0.35 : 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <label className={`block text-xs ${theme.labelText} mb-1 pl-1`}>До</label>
           <input
             type="number"
@@ -103,7 +111,7 @@ export function RaffleForm({
               cursor: isReady ? "default" : "text",
             }}
           />
-        </div>
+        </motion.div>
         <motion.div
           className="w-20"
           animate={{ opacity: isReady ? 1 : 0.35 }}
@@ -129,7 +137,11 @@ export function RaffleForm({
       </motion.div>
 
       {/* Без повторов */}
-      <motion.div variants={itemVariants}>
+      <motion.div
+        variants={itemVariants}
+        animate={{ opacity: isReady ? 0.35 : 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <label
           className={`flex items-center gap-3 rounded-[16px] px-4 py-3 select-none ${isReady ? "cursor-default" : "cursor-pointer"}`}
           style={{
