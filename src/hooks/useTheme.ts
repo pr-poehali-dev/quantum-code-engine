@@ -40,6 +40,6 @@ export function buildTheme(isDark: boolean): Theme {
     timeBg: isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.65)",
     timeBorder: isDark ? "rgba(255,255,255,0.1)" : "rgba(124,58,237,0.18)",
     timeText: isDark ? "text-white" : "text-gray-900",
-    timeSub: isDark ? "text-gray-500" : "text-gray-400",
+    timeSub: isDark ? "text-gray-300" : "text-gray-600",
   }
 }

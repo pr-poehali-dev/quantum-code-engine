@@ -225,7 +225,7 @@ export function LinkBioPage() {
         />
 
         <motion.div variants={itemVariants} className="pb-2">
-          <SocialFooter socials={socials} copyright="2025 Розыгрыш призов" />
+          <SocialFooter socials={socials} copyright="2025 Розыгрыш призов" isDark={isDark} />
         </motion.div>
       </motion.div>
     </main>

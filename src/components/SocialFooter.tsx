@@ -10,9 +10,13 @@ interface SocialLink {
 interface SocialFooterProps {
   socials: SocialLink[]
   copyright: string
+  isDark?: boolean
 }
 
-export function SocialFooter({ socials, copyright }: SocialFooterProps) {
+export function SocialFooter({ socials, copyright, isDark = true }: SocialFooterProps) {
+  const linkColor = isDark ? "text-purple-300" : "text-purple-700"
+  const copyrightColor = isDark ? "text-gray-400" : "text-gray-600"
+
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-3">
@@ -23,7 +27,7 @@ export function SocialFooter({ socials, copyright }: SocialFooterProps) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={social.label}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full text-purple-300"
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-full ${linkColor}`}
             style={{
               background: "rgba(124,58,237,0.15)",
               border: "1px solid rgba(124,58,237,0.3)",
@@ -38,7 +42,7 @@ export function SocialFooter({ socials, copyright }: SocialFooterProps) {
         ))}
       </div>
 
-      <p className="text-[11px] text-gray-600">{copyright}</p>
+      <p className={`text-[11px] ${copyrightColor}`}>{copyright}</p>
     </div>
   )
 }
