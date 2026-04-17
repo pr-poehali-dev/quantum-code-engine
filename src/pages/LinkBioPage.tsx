@@ -2,12 +2,11 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ProfileSection } from "@/components/ProfileSection"
 import { SocialFooter } from "@/components/SocialFooter"
-import { Send, MessageCircle, Mail } from "lucide-react"
+import { MessageSquare, Info } from "lucide-react"
 
 const socials = [
-  { icon: Send, href: "#", label: "Telegram" },
-  { icon: MessageCircle, href: "#", label: "WhatsApp" },
-  { icon: Mail, href: "#", label: "Email" },
+  { icon: MessageSquare, href: "#", label: "Обратная связь" },
+  { icon: Info, href: "#", label: "О нас" },
 ]
 
 const containerVariants = {
