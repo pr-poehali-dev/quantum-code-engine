@@ -2,38 +2,38 @@ import { motion } from "framer-motion"
 import { ProfileSection } from "@/components/ProfileSection"
 import { LinkCard } from "@/components/LinkCard"
 import { SocialFooter } from "@/components/SocialFooter"
-import { Globe, Youtube, Mail, ShoppingBag, FileText, MessageCircle, Send } from "lucide-react"
+import { Gift, Trophy, Star, Send, MessageCircle, Mail, Ticket, Users } from "lucide-react"
 
 const links = [
   {
-    title: "Мой сайт",
-    description: "Портфолио и услуги",
+    title: "🎁 Участвовать в розыгрыше",
+    description: "Нажми и зарегистрируйся — это бесплатно!",
     href: "#",
-    icon: Globe,
+    icon: Ticket,
   },
   {
-    title: "YouTube канал",
-    description: "Видео и туториалы",
+    title: "🏆 Призы и награды",
+    description: "Посмотри, что можно выиграть",
     href: "#",
-    icon: Youtube,
+    icon: Trophy,
   },
   {
-    title: "Магазин",
-    description: "Товары и услуги",
+    title: "👥 Список участников",
+    description: "Проверь свою регистрацию",
     href: "#",
-    icon: ShoppingBag,
+    icon: Users,
   },
   {
-    title: "Telegram",
-    description: "Написать напрямую",
+    title: "⭐ Прошлые победители",
+    description: "Истории тех, кто уже выиграл",
     href: "#",
-    icon: Send,
+    icon: Star,
   },
   {
-    title: "Бесплатные материалы",
-    description: "Шаблоны и гайды",
+    title: "📢 Следить за результатами",
+    description: "Подпишись — узнай первым об итогах",
     href: "#",
-    icon: FileText,
+    icon: Gift,
   },
 ]
 
@@ -211,8 +211,8 @@ export function LinkBioPage() {
       >
         <motion.div variants={itemVariants} className="pt-2">
           <ProfileSection
-            name="GlassLinks"
-            bio="Креативный дизайнер и разработчик"
+            name="Розыгрыш призов"
+            bio="Участвуй и выигрывай ценные призы от нашей компании 🎉"
             imageUrl="/images/544291433-18043960274659947-5766591717842883293-n.jpg"
           />
         </motion.div>
@@ -226,7 +226,7 @@ export function LinkBioPage() {
         </motion.div>
 
         <motion.div variants={itemVariants} className="pb-2">
-          <SocialFooter socials={socials} copyright="2025 GlassLinks" />
+          <SocialFooter socials={socials} copyright="2025 Розыгрыш призов" />
         </motion.div>
       </motion.div>
     </main>
