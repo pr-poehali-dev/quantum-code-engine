@@ -88,6 +88,8 @@ export function LinkBioPage() {
   const [max, setMax] = useState("")
   const [count, setCount] = useState("1")
   const [noRepeat, setNoRepeat] = useState(false)
+  const [excludeUsed, setExcludeUsed] = useState(false)
+  const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set())
   const [results, setResults] = useState<number[]>([])
   const [rolling, setRolling] = useState(false)
   const [error, setError] = useState("")
@@ -116,8 +118,15 @@ export function LinkBioPage() {
       return
     }
     const rangeSize = maxNum - minNum + 1
-    if (noRepeat && countNum > rangeSize) {
-      setError(`Без повторов можно выбрать максимум ${rangeSize} чисел`)
+    const pool = Array.from({ length: rangeSize }, (_, i) => minNum + i)
+      .filter(n => !excludeUsed || !usedNumbers.has(n))
+
+    if (noRepeat && countNum > pool.length) {
+      setError(`Без повторов можно выбрать максимум ${pool.length} чисел из доступных`)
+      return
+    }
+    if (excludeUsed && pool.length === 0) {
+      setError("Все числа из диапазона уже были использованы")
       return
     }
     setError("")
@@ -127,16 +136,19 @@ export function LinkBioPage() {
     setTimeout(() => {
       let final: number[]
       if (noRepeat) {
-        const pool = Array.from({ length: rangeSize }, (_, i) => minNum + i)
-        for (let i = pool.length - 1; i > 0; i--) {
+        const shuffled = [...pool]
+        for (let i = shuffled.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
-          [pool[i], pool[j]] = [pool[j], pool[i]]
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
         }
-        final = pool.slice(0, countNum)
+        final = shuffled.slice(0, countNum)
       } else {
-        final = Array.from({ length: countNum }, () => Math.floor(Math.random() * rangeSize) + minNum)
+        final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
       }
       setResults(final)
+      if (excludeUsed) {
+        setUsedNumbers(prev => new Set([...prev, ...final]))
+      }
       setRolling(false)
     }, 600)
   }
@@ -339,10 +351,10 @@ export function LinkBioPage() {
             </div>
           </motion.div>
 
-          {/* Без повторов */}
-          <motion.div variants={itemVariants}>
+          {/* Без повторов + До последнего числа */}
+          <motion.div variants={itemVariants} className="flex gap-3">
             <label
-              className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
+              className="flex flex-1 items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
               style={{
                 background: "rgba(255,255,255,0.45)",
                 backdropFilter: "blur(30px)",
@@ -363,6 +375,35 @@ export function LinkBioPage() {
                 />
               </div>
               <span className="text-sm text-gray-700 font-medium">Без повторов</span>
+            </label>
+
+            <label
+              className="flex flex-1 items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
+              style={{
+                background: excludeUsed ? "rgba(124,58,237,0.06)" : "rgba(255,255,255,0.45)",
+                backdropFilter: "blur(30px)",
+                border: excludeUsed ? "1px solid rgba(124,58,237,0.25)" : "1px solid rgba(255,255,255,0.5)",
+                boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.04)",
+              }}
+            >
+              <div
+                onClick={() => { setExcludeUsed(v => !v); setUsedNumbers(new Set()) }}
+                className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
+                style={{
+                  background: excludeUsed ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(0,0,0,0.1)",
+                }}
+              >
+                <div
+                  className="absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all duration-200"
+                  style={{ left: excludeUsed ? "calc(100% - 20px)" : "4px" }}
+                />
+              </div>
+              <div>
+                <div className="text-sm text-gray-700 font-medium leading-tight">До последнего</div>
+                {excludeUsed && usedNumbers.size > 0 && (
+                  <div className="text-[11px] text-purple-500 mt-0.5">использовано: {usedNumbers.size}</div>
+                )}
+              </div>
             </label>
           </motion.div>
 
