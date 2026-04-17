@@ -100,7 +100,12 @@ export function RaffleForm({
             }}
           />
         </div>
-        <div className="w-20">
+        <motion.div
+          className="w-20"
+          animate={{ opacity: isReady ? 1 : 0.35 }}
+          transition={{ duration: 0.5 }}
+          style={{ pointerEvents: isReady ? "auto" : "none" }}
+        >
           <label className={`block text-xs ${theme.labelText} mb-1 pl-1`}>Кол-во</label>
           <input
             type="number"
@@ -116,7 +121,7 @@ export function RaffleForm({
               boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.1)",
             }}
           />
-        </div>
+        </motion.div>
       </motion.div>
 
       {/* Без повторов */}
