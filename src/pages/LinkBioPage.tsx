@@ -95,6 +95,7 @@ export function LinkBioPage() {
   const [error, setError] = useState("")
   const [showQr, setShowQr] = useState(false)
   const [isLastNumber, setIsLastNumber] = useState(false)
+  const [displayNumbers, setDisplayNumbers] = useState<number[]>([])
 
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const [now, setNow] = useState(new Date())
@@ -134,34 +135,46 @@ export function LinkBioPage() {
     setError("")
     setRolling(true)
     setResults([])
+    setDisplayNumbers([])
 
-    setTimeout(() => {
-      let final: number[]
-      if (noRepeat) {
-        const shuffled = [...pool]
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-        }
-        final = shuffled.slice(0, countNum)
-      } else {
-        final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
+    let final: number[]
+    if (noRepeat) {
+      const shuffled = [...pool]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
       }
-      setResults(final)
-      setShowQr(false)
-      if (excludeUsed) {
-        const newUsed = new Set([...usedNumbers, ...final])
-        setUsedNumbers(newUsed)
-        const rangeTotal = maxNum - minNum + 1
-        if (newUsed.size >= rangeTotal) {
-          setIsLastNumber(true)
-          setShowQr(true)
-        } else {
-          setIsLastNumber(false)
+      final = shuffled.slice(0, countNum)
+    } else {
+      final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
+    }
+
+    const totalDuration = 1800
+    const intervalMs = 80
+    const steps = Math.floor(totalDuration / intervalMs)
+    let step = 0
+    const ticker = setInterval(() => {
+      setDisplayNumbers(final.map(() => pool[Math.floor(Math.random() * pool.length)]))
+      step++
+      if (step >= steps) {
+        clearInterval(ticker)
+        setDisplayNumbers(final)
+        setResults(final)
+        setShowQr(false)
+        if (excludeUsed) {
+          const newUsed = new Set([...usedNumbers, ...final])
+          setUsedNumbers(newUsed)
+          const rangeTotal = maxNum - minNum + 1
+          if (newUsed.size >= rangeTotal) {
+            setIsLastNumber(true)
+            setShowQr(true)
+          } else {
+            setIsLastNumber(false)
+          }
         }
+        setRolling(false)
       }
-      setRolling(false)
-    }, 600)
+    }, intervalMs)
   }
 
   return (
@@ -350,29 +363,27 @@ export function LinkBioPage() {
               minHeight: 120,
             }}
           >
-            <AnimatePresence mode="wait">
-              {results.length > 0 ? (
-                results.map((num, i) => (
-                  <motion.span
-                    key={`${num}-${i}`}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="font-bold text-white tracking-tight"
-                    style={{
-                      fontSize: results.length === 1 ? "5rem" : results.length <= 4 ? "3rem" : "1.75rem",
-                      fontVariantNumeric: "tabular-nums",
-                      lineHeight: 1.1,
-                    }}
-                  >
-                    {num}
-                  </motion.span>
-                ))
-              ) : (
-                <motion.span key="placeholder" className="text-3xl text-gray-300 font-light">
-                  ?
+            {displayNumbers.length > 0 ? (
+              displayNumbers.map((num, i) => (
+                <motion.span
+                  key={rolling ? `roll-${i}-${num}` : `final-${i}`}
+                  initial={rolling ? { opacity: 0, y: -10 } : { opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={rolling ? { duration: 0.05 } : { type: "spring", stiffness: 400, damping: 20 }}
+                  className="font-bold tracking-tight"
+                  style={{
+                    fontSize: displayNumbers.length === 1 ? "5rem" : displayNumbers.length <= 4 ? "3rem" : "1.75rem",
+                    fontVariantNumeric: "tabular-nums",
+                    lineHeight: 1.1,
+                    color: rolling ? "rgba(234,179,8,0.6)" : "#eab308",
+                  }}
+                >
+                  {num}
                 </motion.span>
-              )}
-            </AnimatePresence>
+              ))
+            ) : (
+              <span className="text-3xl text-gray-600 font-light">?</span>
+            )}
           </motion.div>
 
           {/* Button */}
