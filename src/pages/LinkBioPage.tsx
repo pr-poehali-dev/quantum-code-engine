@@ -351,10 +351,10 @@ export function LinkBioPage() {
             </div>
           </motion.div>
 
-          {/* Без повторов + До последнего числа */}
-          <motion.div variants={itemVariants} className="flex gap-3">
+          {/* Без повторов */}
+          <motion.div variants={itemVariants}>
             <label
-              className="flex flex-1 items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
+              className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
               style={{
                 background: "rgba(255,255,255,0.45)",
                 backdropFilter: "blur(30px)",
@@ -376,9 +376,12 @@ export function LinkBioPage() {
               </div>
               <span className="text-sm text-gray-700 font-medium">Без повторов</span>
             </label>
+          </motion.div>
 
+          {/* До последнего числа */}
+          <motion.div variants={itemVariants}>
             <label
-              className="flex flex-1 items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
+              className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
               style={{
                 background: excludeUsed ? "rgba(124,58,237,0.06)" : "rgba(255,255,255,0.45)",
                 backdropFilter: "blur(30px)",
@@ -399,7 +402,7 @@ export function LinkBioPage() {
                 />
               </div>
               <div>
-                <div className="text-sm text-gray-700 font-medium leading-tight">До последнего</div>
+                <div className="text-sm text-gray-700 font-medium leading-tight">До последнего числа</div>
                 {excludeUsed && usedNumbers.size > 0 && (
                   <div className="text-[11px] text-purple-500 mt-0.5">использовано: {usedNumbers.size}</div>
                 )}
