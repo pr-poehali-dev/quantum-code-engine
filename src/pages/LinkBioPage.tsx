@@ -133,17 +133,7 @@ export function LinkBioPage() {
     setResults([])
     setDisplayNumbers([])
 
-    let final: number[]
-    if (excludeUsed) {
-      const shuffled = [...pool]
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-      }
-      final = shuffled.slice(0, Math.min(countNum, shuffled.length))
-    } else {
-      final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
-    }
+    const final: number[] = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
 
 
     setDisplayNumbers(final)
@@ -340,7 +330,7 @@ export function LinkBioPage() {
                         fontSize: displayNumbers.length === 1 ? "5rem" : displayNumbers.length <= 4 ? "3rem" : "1.75rem",
                         fontVariantNumeric: "tabular-nums",
                         lineHeight: 1.1,
-                        color: "#ffffff",
+                        color: "#a78bfa",
                       }}
                     >
                       {num}
