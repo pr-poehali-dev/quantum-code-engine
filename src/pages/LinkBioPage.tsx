@@ -340,7 +340,7 @@ export function LinkBioPage() {
                         fontSize: displayNumbers.length === 1 ? "5rem" : displayNumbers.length <= 4 ? "3rem" : "1.75rem",
                         fontVariantNumeric: "tabular-nums",
                         lineHeight: 1.1,
-                        color: "#ffffff",
+                        color: "#a78bfa",
                       }}
                     >
                       {num}
