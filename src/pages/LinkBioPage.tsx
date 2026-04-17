@@ -226,8 +226,8 @@ export function LinkBioPage() {
       >
         <motion.div variants={itemVariants} className="pt-2 flex flex-col items-center text-center">
           <SpinningNumbers />
-          <h1 className="mt-5 text-xl font-semibold tracking-tight text-white">Розыгрыш призов</h1>
-          <p className="mt-2 text-sm text-gray-400">Участвуй и выигрывай ценные призы от нашей компании 🎉</p>
+          <h1 className="mt-5 text-xl font-semibold tracking-tight text-white">Генератор случайных чисел</h1>
+          <p className="mt-2 text-sm text-gray-400">Честный и прозрачный розыгрыш за секунды 🎲</p>
         </motion.div>
 
         <motion.div className="py-8 space-y-4" variants={containerVariants}>
