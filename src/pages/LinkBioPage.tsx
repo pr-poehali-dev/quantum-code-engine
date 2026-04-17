@@ -168,11 +168,7 @@ export function LinkBioPage() {
     <main className="relative min-h-screen px-6 py-10 flex flex-col overflow-hidden">
       <div className="fixed inset-0 z-0 bg-gradient-to-br from-[#0d0d1a] via-[#11101f] to-[#0a0a14]" />
 
-      {/* Static gradient orbs */}
-      <div className="fixed z-0 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(234, 179, 8, 0.45) 0%, transparent 70%)", filter: "blur(60px)", top: "-10%", left: "-10%" }} />
-      <div className="fixed z-0 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(251, 146, 60, 0.35) 0%, transparent 70%)", filter: "blur(80px)", top: "30%", right: "-20%" }} />
-      <div className="fixed z-0 w-[450px] h-[450px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(234, 179, 8, 0.3) 0%, transparent 70%)", filter: "blur(70px)", bottom: "-5%", left: "20%" }} />
-      <div className="fixed z-0 w-[350px] h-[350px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(253, 224, 71, 0.25) 0%, transparent 70%)", filter: "blur(50px)", top: "60%", left: "-5%" }} />
+
 
       {/* QR badge */}
       <AnimatePresence>
