@@ -236,6 +236,8 @@ export function RaffleForm({
         </AnimatePresence>
       </motion.div>
 
+      </motion.div>{/* end locked block */}
+
       {/* Время проведения */}
       <motion.div
         variants={itemVariants}
@@ -263,8 +265,6 @@ export function RaffleForm({
           {tzLabel}
         </div>
       </motion.div>
-
-      </motion.div>{/* end locked block */}
     </motion.div>
   )
 }
