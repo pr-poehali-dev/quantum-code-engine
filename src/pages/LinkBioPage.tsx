@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ProfileSection } from "@/components/ProfileSection"
 import { SocialFooter } from "@/components/SocialFooter"
-import { MessageSquare, Info } from "lucide-react"
+import { MessageSquare, Info, Sun, Moon } from "lucide-react"
 
 const socials = [
   { icon: MessageSquare, href: "#", label: "Обратная связь" },
@@ -36,13 +35,14 @@ const itemVariants = {
   },
 }
 
-function SpinningNumbers() {
+function SpinningNumbers({ isDark }: { isDark: boolean }) {
   const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   const cols = [
     { duration: 1.4, delay: 0 },
     { duration: 1.8, delay: 0.15 },
     { duration: 1.2, delay: 0.3 },
   ]
+  const fadeColor = isDark ? "rgba(13,13,26,0.85)" : "rgba(240,238,255,0.85)"
 
   return (
     <div
@@ -65,7 +65,7 @@ function SpinningNumbers() {
             {[...digits, ...digits].map((d, i) => (
               <div
                 key={i}
-                className="flex items-center justify-center font-bold text-purple-300"
+                className="flex items-center justify-center font-bold text-purple-500"
                 style={{ height: 28, fontSize: 18, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
               >
                 {d}
@@ -76,13 +76,14 @@ function SpinningNumbers() {
       ))}
 
       {/* fade top/bottom */}
-      <div className="absolute inset-x-0 top-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(13,13,26,0.85), transparent)" }} />
-      <div className="absolute inset-x-0 bottom-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(13,13,26,0.85), transparent)" }} />
+      <div className="absolute inset-x-0 top-0 h-8 pointer-events-none" style={{ background: `linear-gradient(to bottom, ${fadeColor}, transparent)` }} />
+      <div className="absolute inset-x-0 bottom-0 h-8 pointer-events-none" style={{ background: `linear-gradient(to top, ${fadeColor}, transparent)` }} />
     </div>
   )
 }
 
 export function LinkBioPage() {
+  const [isDark, setIsDark] = useState(true)
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
   const [count, setCount] = useState("1")
@@ -163,9 +164,49 @@ export function LinkBioPage() {
     setRolling(false)
   }
 
+  const theme = {
+    bg: isDark
+      ? "from-[#0d0d1a] via-[#11101f] to-[#0a0a14]"
+      : "from-[#f0eeff] via-[#f5f0ff] to-[#eae4ff]",
+    inputBg: isDark ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.7)",
+    inputBorder: isDark ? "rgba(255,255,255,0.12)" : "rgba(124,58,237,0.2)",
+    inputText: isDark ? "text-white" : "text-gray-800",
+    inputPlaceholder: isDark ? "placeholder:text-gray-600" : "placeholder:text-gray-400",
+    cardBg: isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.65)",
+    cardBorder: isDark ? "rgba(255,255,255,0.1)" : "rgba(124,58,237,0.18)",
+    headingText: isDark ? "text-white" : "text-gray-900",
+    subText: isDark ? "text-gray-400" : "text-gray-500",
+    labelText: isDark ? "text-gray-400" : "text-gray-500",
+    toggleBg: isDark ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.7)",
+    toggleBorder: isDark ? "rgba(255,255,255,0.15)" : "rgba(124,58,237,0.25)",
+    resultNum: isDark ? "#a78bfa" : "#7c3aed",
+    timeBg: isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.65)",
+    timeBorder: isDark ? "rgba(255,255,255,0.1)" : "rgba(124,58,237,0.18)",
+    timeText: isDark ? "text-white" : "text-gray-900",
+    timeSub: isDark ? "text-gray-500" : "text-gray-400",
+  }
+
   return (
-    <main className="relative min-h-screen px-6 py-10 flex flex-col overflow-hidden">
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-[#0d0d1a] via-[#11101f] to-[#0a0a14]" />
+    <main className={`relative min-h-screen px-6 py-10 flex flex-col overflow-hidden`}>
+      <div className={`fixed inset-0 z-0 bg-gradient-to-br ${theme.bg} transition-colors duration-500`} />
+
+      {/* Theme toggle */}
+      <button
+        onClick={() => setIsDark(v => !v)}
+        className="fixed top-4 right-4 z-50 flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300"
+        style={{
+          background: theme.toggleBg,
+          backdropFilter: "blur(20px)",
+          border: `1px solid ${theme.toggleBorder}`,
+          boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+        }}
+        title={isDark ? "Светлая тема" : "Тёмная тема"}
+      >
+        {isDark
+          ? <Sun size={18} className="text-yellow-300" />
+          : <Moon size={18} className="text-purple-600" />
+        }
+      </button>
 
 
 
@@ -212,60 +253,60 @@ export function LinkBioPage() {
         className="relative z-10 mx-auto max-w-[400px] w-full flex flex-col flex-1 justify-between"
       >
         <motion.div variants={itemVariants} className="pt-2 flex flex-col items-center text-center">
-          <SpinningNumbers />
-          <h1 className="mt-5 text-xl font-semibold tracking-tight text-white">Генератор случайных чисел</h1>
-          <p className="mt-2 text-sm text-gray-400">Честный и прозрачный розыгрыш за секунды 🎲</p>
+          <SpinningNumbers isDark={isDark} />
+          <h1 className={`mt-5 text-xl font-semibold tracking-tight ${theme.headingText}`}>Генератор случайных чисел</h1>
+          <p className={`mt-2 text-sm ${theme.subText}`}>Честный и прозрачный розыгрыш за секунды 🎲</p>
         </motion.div>
 
         <motion.div className="py-8 space-y-4" variants={containerVariants}>
           {/* Диапазон */}
           <motion.div variants={itemVariants} className="flex gap-3">
             <div className="flex-1">
-              <label className="block text-xs text-gray-400 mb-1 pl-1">От</label>
+              <label className={`block text-xs ${theme.labelText} mb-1 pl-1`}>От</label>
               <input
                 type="number"
                 value={min}
                 onChange={e => setMin(e.target.value)}
                 placeholder="1"
-                className="w-full rounded-[16px] px-4 py-3 text-center text-white font-semibold text-lg outline-none placeholder:text-gray-600"
+                className={`w-full rounded-[16px] px-4 py-3 text-center ${theme.inputText} font-semibold text-lg outline-none ${theme.inputPlaceholder}`}
                 style={{
-                  background: "rgba(255,255,255,0.07)",
+                  background: theme.inputBg,
                   backdropFilter: "blur(30px)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.2)",
+                  border: `1px solid ${theme.inputBorder}`,
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.1)",
                 }}
               />
             </div>
             <div className="flex-1">
-              <label className="block text-xs text-gray-400 mb-1 pl-1">До</label>
+              <label className={`block text-xs ${theme.labelText} mb-1 pl-1`}>До</label>
               <input
                 type="number"
                 value={max}
                 onChange={e => setMax(e.target.value)}
                 placeholder="100"
-                className="w-full rounded-[16px] px-4 py-3 text-center text-white font-semibold text-lg outline-none placeholder:text-gray-600"
+                className={`w-full rounded-[16px] px-4 py-3 text-center ${theme.inputText} font-semibold text-lg outline-none ${theme.inputPlaceholder}`}
                 style={{
-                  background: "rgba(255,255,255,0.07)",
+                  background: theme.inputBg,
                   backdropFilter: "blur(30px)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.2)",
+                  border: `1px solid ${theme.inputBorder}`,
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.1)",
                 }}
               />
             </div>
             <div className="w-20">
-              <label className="block text-xs text-gray-400 mb-1 pl-1">Кол-во</label>
+              <label className={`block text-xs ${theme.labelText} mb-1 pl-1`}>Кол-во</label>
               <input
                 type="number"
                 value={count}
                 min={1}
                 onChange={e => setCount(e.target.value)}
                 placeholder="1"
-                className="w-full rounded-[16px] px-2 py-3 text-center text-white font-semibold text-lg outline-none placeholder:text-gray-600"
+                className={`w-full rounded-[16px] px-2 py-3 text-center ${theme.inputText} font-semibold text-lg outline-none ${theme.inputPlaceholder}`}
                 style={{
-                  background: "rgba(255,255,255,0.07)",
+                  background: theme.inputBg,
                   backdropFilter: "blur(30px)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.2)",
+                  border: `1px solid ${theme.inputBorder}`,
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.1)",
                 }}
               />
             </div>
@@ -276,10 +317,10 @@ export function LinkBioPage() {
             <label
               className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
               style={{
-                background: excludeUsed ? "rgba(124,58,237,0.18)" : "rgba(255,255,255,0.06)",
+                background: excludeUsed ? "rgba(124,58,237,0.18)" : theme.cardBg,
                 backdropFilter: "blur(30px)",
-                border: excludeUsed ? "1px solid rgba(124,58,237,0.4)" : "1px solid rgba(255,255,255,0.1)",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+                border: excludeUsed ? "1px solid rgba(124,58,237,0.4)" : `1px solid ${theme.cardBorder}`,
+                boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
               }}
             >
               <div
@@ -295,7 +336,7 @@ export function LinkBioPage() {
                 />
               </div>
               <div>
-                <div className="text-sm text-gray-200 font-medium leading-tight">Без повторов, до последнего числа</div>
+                <div className={`text-sm ${isDark ? "text-gray-200" : "text-gray-700"} font-medium leading-tight`}>Без повторов, до последнего числа</div>
                 {excludeUsed && usedNumbers.size > 0 && (
                   <div className="text-[11px] text-purple-400 mt-0.5">использовано: {usedNumbers.size}</div>
                 )}
@@ -315,10 +356,10 @@ export function LinkBioPage() {
             variants={itemVariants}
             className="flex flex-wrap items-center justify-center gap-3 rounded-[20px] py-6 px-4"
             style={{
-              background: "rgba(255,255,255,0.05)",
+              background: theme.cardBg,
               backdropFilter: "blur(40px) saturate(180%)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+              border: `1px solid ${theme.cardBorder}`,
+              boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
               minHeight: 120,
             }}
           >
@@ -340,7 +381,7 @@ export function LinkBioPage() {
                         fontSize: displayNumbers.length === 1 ? "5rem" : displayNumbers.length <= 4 ? "3rem" : "1.75rem",
                         fontVariantNumeric: "tabular-nums",
                         lineHeight: 1.1,
-                        color: "#a78bfa",
+                        color: theme.resultNum,
                       }}
                     >
                       {num}
@@ -385,22 +426,22 @@ export function LinkBioPage() {
             variants={itemVariants}
             className="flex items-center justify-between rounded-[20px] px-5 py-4"
             style={{
-              background: "rgba(255,255,255,0.05)",
+              background: theme.timeBg,
               backdropFilter: "blur(40px) saturate(180%)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+              border: `1px solid ${theme.timeBorder}`,
+              boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
             }}
           >
             <div>
-              <div className="text-[11px] text-gray-500 mb-0.5">{dateStr}</div>
-              <div className="text-2xl font-bold text-white tracking-tight" style={{ fontVariantNumeric: "tabular-nums" }}>
+              <div className={`text-[11px] ${theme.timeSub} mb-0.5`}>{dateStr}</div>
+              <div className={`text-2xl font-bold ${theme.timeText} tracking-tight`} style={{ fontVariantNumeric: "tabular-nums" }}>
                 {timeStr}
               </div>
             </div>
             <div
-              className="text-xs font-semibold px-3 py-1.5 rounded-full text-purple-300"
+              className="text-xs font-semibold px-3 py-1.5 rounded-full text-purple-500"
               style={{
-                background: "rgba(124,58,237,0.2)",
+                background: "rgba(124,58,237,0.15)",
                 border: "1px solid rgba(124,58,237,0.35)",
               }}
             >
