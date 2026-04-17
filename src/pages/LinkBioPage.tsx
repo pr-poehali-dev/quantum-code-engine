@@ -40,31 +40,58 @@ const itemVariants = {
 export function LinkBioPage() {
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
-  const [result, setResult] = useState<number | null>(null)
+  const [count, setCount] = useState("1")
+  const [noRepeat, setNoRepeat] = useState(false)
+  const [results, setResults] = useState<number[]>([])
   const [rolling, setRolling] = useState(false)
   const [error, setError] = useState("")
 
   function handleRoll() {
     const minNum = parseInt(min)
     const maxNum = parseInt(max)
+    const countNum = parseInt(count) || 1
     if (isNaN(minNum) || isNaN(maxNum)) {
-      setError("Введи оба числа")
+      setError("Введи оба числа диапазона")
       return
     }
     if (minNum >= maxNum) {
       setError("Минимум должен быть меньше максимума")
       return
     }
+    const rangeSize = maxNum - minNum + 1
+    if (noRepeat && countNum > rangeSize) {
+      setError(`Без повторов можно выбрать максимум ${rangeSize} чисел`)
+      return
+    }
     setError("")
     setRolling(true)
-    setResult(null)
+    setResults([])
 
-    let count = 0
+    let tick = 0
+    const totalTicks = 20
     const interval = setInterval(() => {
-      setResult(Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum)
-      count++
-      if (count >= 20) {
+      const fake: number[] = []
+      for (let i = 0; i < countNum; i++) {
+        fake.push(Math.floor(Math.random() * rangeSize) + minNum)
+      }
+      setResults(fake)
+      tick++
+      if (tick >= totalTicks) {
         clearInterval(interval)
+        if (noRepeat) {
+          const pool = Array.from({ length: rangeSize }, (_, i) => minNum + i)
+          for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]]
+          }
+          setResults(pool.slice(0, countNum))
+        } else {
+          const final: number[] = []
+          for (let i = 0; i < countNum; i++) {
+            final.push(Math.floor(Math.random() * rangeSize) + minNum)
+          }
+          setResults(final)
+        }
         setRolling(false)
       }
     }, 60)
@@ -217,7 +244,7 @@ export function LinkBioPage() {
         </motion.div>
 
         <motion.div className="py-8 space-y-4" variants={containerVariants}>
-          {/* Inputs */}
+          {/* Диапазон */}
           <motion.div variants={itemVariants} className="flex gap-3">
             <div className="flex-1">
               <label className="block text-xs text-gray-500 mb-1 pl-1">От</label>
@@ -251,6 +278,50 @@ export function LinkBioPage() {
                 }}
               />
             </div>
+            <div className="w-20">
+              <label className="block text-xs text-gray-500 mb-1 pl-1">Кол-во</label>
+              <input
+                type="number"
+                value={count}
+                min={1}
+                onChange={e => setCount(e.target.value)}
+                placeholder="1"
+                className="w-full rounded-[16px] px-2 py-3 text-center text-gray-800 font-semibold text-lg outline-none placeholder:text-gray-300"
+                style={{
+                  background: "rgba(255,255,255,0.55)",
+                  backdropFilter: "blur(30px)",
+                  border: "1px solid rgba(255,255,255,0.6)",
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
+                }}
+              />
+            </div>
+          </motion.div>
+
+          {/* Без повторов */}
+          <motion.div variants={itemVariants}>
+            <label
+              className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
+              style={{
+                background: "rgba(255,255,255,0.45)",
+                backdropFilter: "blur(30px)",
+                border: "1px solid rgba(255,255,255,0.5)",
+                boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.04)",
+              }}
+            >
+              <div
+                onClick={() => setNoRepeat(v => !v)}
+                className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
+                style={{
+                  background: noRepeat ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(0,0,0,0.1)",
+                }}
+              >
+                <div
+                  className="absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all duration-200"
+                  style={{ left: noRepeat ? "calc(100% - 20px)" : "4px" }}
+                />
+              </div>
+              <span className="text-sm text-gray-700 font-medium">Без повторов</span>
+            </label>
           </motion.div>
 
           {/* Error */}
@@ -260,10 +331,10 @@ export function LinkBioPage() {
             </motion.p>
           )}
 
-          {/* Result */}
+          {/* Results */}
           <motion.div
             variants={itemVariants}
-            className="flex items-center justify-center rounded-[20px] py-8"
+            className="flex flex-wrap items-center justify-center gap-3 rounded-[20px] py-6 px-4"
             style={{
               background: "rgba(255,255,255,0.45)",
               backdropFilter: "blur(40px) saturate(180%)",
@@ -273,16 +344,22 @@ export function LinkBioPage() {
             }}
           >
             <AnimatePresence mode="wait">
-              {result !== null ? (
-                <motion.span
-                  key={result}
-                  initial={{ opacity: 0, scale: 0.6 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-7xl font-bold text-gray-800 tracking-tight"
-                  style={{ fontVariantNumeric: "tabular-nums" }}
-                >
-                  {result}
-                </motion.span>
+              {results.length > 0 ? (
+                results.map((num, i) => (
+                  <motion.span
+                    key={`${num}-${i}`}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="font-bold text-gray-800 tracking-tight"
+                    style={{
+                      fontSize: results.length === 1 ? "5rem" : results.length <= 4 ? "3rem" : "1.75rem",
+                      fontVariantNumeric: "tabular-nums",
+                      lineHeight: 1.1,
+                    }}
+                  >
+                    {num}
+                  </motion.span>
+                ))
               ) : (
                 <motion.span key="placeholder" className="text-3xl text-gray-300 font-light">
                   ?
