@@ -159,6 +159,26 @@ export function RaffleForm({
         </motion.p>
       )}
 
+      {/* Разыграть */}
+      <motion.div variants={itemVariants}>
+        <motion.button
+          onClick={onRoll}
+          disabled={rolling}
+          className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-70"
+          style={{
+            background: rolling
+              ? "linear-gradient(135deg, #a855f7, #ec4899)"
+              : "linear-gradient(135deg, #7c3aed, #db2777)",
+            boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
+          }}
+          whileHover={!rolling ? { scale: 1.02, y: -2 } : {}}
+          whileTap={!rolling ? { scale: 0.98, y: 0 } : {}}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        >
+          {rolling ? "Выбираем..." : "🎲 Разыграть"}
+        </motion.button>
+      </motion.div>
+
       {/* Results */}
       <motion.div
         variants={itemVariants}
@@ -207,26 +227,6 @@ export function RaffleForm({
             </motion.span>
           )}
         </AnimatePresence>
-      </motion.div>
-
-      {/* Разыграть */}
-      <motion.div variants={itemVariants}>
-        <motion.button
-          onClick={onRoll}
-          disabled={rolling}
-          className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-70"
-          style={{
-            background: rolling
-              ? "linear-gradient(135deg, #a855f7, #ec4899)"
-              : "linear-gradient(135deg, #7c3aed, #db2777)",
-            boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
-          }}
-          whileHover={!rolling ? { scale: 1.02, y: -2 } : {}}
-          whileTap={!rolling ? { scale: 0.98, y: 0 } : {}}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        >
-          {rolling ? "Выбираем..." : "🎲 Разыграть"}
-        </motion.button>
       </motion.div>
 
       {/* Время проведения */}
