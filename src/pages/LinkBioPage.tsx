@@ -86,7 +86,7 @@ export function LinkBioPage() {
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
   const [count, setCount] = useState("1")
-  const [sortAsc, setSortAsc] = useState(false)
+
   const [excludeUsed, setExcludeUsed] = useState(false)
   const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set())
   const [results, setResults] = useState<number[]>([])
@@ -133,11 +133,8 @@ export function LinkBioPage() {
     setResults([])
     setDisplayNumbers([])
 
-    let final: number[]
-    final = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
-    if (sortAsc) {
-      final = [...final].sort((a, b) => a - b)
-    }
+    const final: number[] = Array.from({ length: countNum }, () => pool[Math.floor(Math.random() * pool.length)])
+
 
     const totalDuration = 1800
     const intervalMs = 80
@@ -275,34 +272,7 @@ export function LinkBioPage() {
             </div>
           </motion.div>
 
-          {/* По возрастанию */}
-          <motion.div variants={itemVariants}>
-            <label
-              className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
-              style={{
-                background: sortAsc ? "rgba(124,58,237,0.18)" : "rgba(255,255,255,0.06)",
-                backdropFilter: "blur(30px)",
-                border: sortAsc ? "1px solid rgba(124,58,237,0.4)" : "1px solid rgba(255,255,255,0.1)",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
-              }}
-            >
-              <div
-                onClick={() => setSortAsc(v => !v)}
-                className="relative w-10 h-6 rounded-full transition-colors duration-200 flex-shrink-0"
-                style={{
-                  background: sortAsc ? "linear-gradient(135deg, #7c3aed, #db2777)" : "rgba(255,255,255,0.12)",
-                }}
-              >
-                <div
-                  className="absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all duration-200"
-                  style={{ left: sortAsc ? "calc(100% - 20px)" : "4px" }}
-                />
-              </div>
-              <span className="text-sm text-gray-200 font-medium">По возрастанию</span>
-            </label>
-          </motion.div>
-
-          {/* До последнего числа */}
+          {/* Без повторов / до последнего числа */}
           <motion.div variants={itemVariants}>
             <label
               className="flex items-center gap-3 cursor-pointer rounded-[16px] px-4 py-3 select-none"
@@ -326,7 +296,7 @@ export function LinkBioPage() {
                 />
               </div>
               <div>
-                <div className="text-sm text-gray-200 font-medium leading-tight">До последнего числа</div>
+                <div className="text-sm text-gray-200 font-medium leading-tight">Без повторов, до последнего числа</div>
                 {excludeUsed && usedNumbers.size > 0 && (
                   <div className="text-[11px] text-purple-400 mt-0.5">использовано: {usedNumbers.size}</div>
                 )}
