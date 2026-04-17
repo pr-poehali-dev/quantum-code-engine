@@ -65,9 +65,6 @@ export function RaffleForm({
     <motion.div
       className="py-8 space-y-4"
       variants={containerVariants}
-      animate={{ opacity: isReady ? 1 : 0.35 }}
-      transition={{ duration: 0.5 }}
-      style={{ pointerEvents: isReady ? "auto" : "none" }}
     >
       {/* Диапазон */}
       <motion.div variants={itemVariants} className="flex gap-3">
@@ -153,6 +150,14 @@ export function RaffleForm({
           </div>
         </label>
       </motion.div>
+
+      {/* Разыграть + Results + Время — заблокированы до старта */}
+      <motion.div
+        className="space-y-4"
+        animate={{ opacity: isReady ? 1 : 0.35 }}
+        transition={{ duration: 0.5 }}
+        style={{ pointerEvents: isReady ? "auto" : "none" }}
+      >
 
       {/* Error */}
       {error && (
@@ -258,6 +263,8 @@ export function RaffleForm({
           {tzLabel}
         </div>
       </motion.div>
+
+      </motion.div>{/* end locked block */}
     </motion.div>
   )
 }
