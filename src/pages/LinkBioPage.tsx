@@ -1,41 +1,8 @@
-import { motion } from "framer-motion"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { ProfileSection } from "@/components/ProfileSection"
-import { LinkCard } from "@/components/LinkCard"
 import { SocialFooter } from "@/components/SocialFooter"
-import { Gift, Trophy, Star, Send, MessageCircle, Mail, Ticket, Users } from "lucide-react"
-
-const links = [
-  {
-    title: "🎁 Участвовать в розыгрыше",
-    description: "Нажми и зарегистрируйся — это бесплатно!",
-    href: "#",
-    icon: Ticket,
-  },
-  {
-    title: "🏆 Призы и награды",
-    description: "Посмотри, что можно выиграть",
-    href: "#",
-    icon: Trophy,
-  },
-  {
-    title: "👥 Список участников",
-    description: "Проверь свою регистрацию",
-    href: "#",
-    icon: Users,
-  },
-  {
-    title: "⭐ Прошлые победители",
-    description: "Истории тех, кто уже выиграл",
-    href: "#",
-    icon: Star,
-  },
-  {
-    title: "📢 Следить за результатами",
-    description: "Подпишись — узнай первым об итогах",
-    href: "#",
-    icon: Gift,
-  },
-]
+import { Send, MessageCircle, Mail } from "lucide-react"
 
 const socials = [
   { icon: Send, href: "#", label: "Telegram" },
@@ -71,6 +38,38 @@ const itemVariants = {
 }
 
 export function LinkBioPage() {
+  const [min, setMin] = useState("")
+  const [max, setMax] = useState("")
+  const [result, setResult] = useState<number | null>(null)
+  const [rolling, setRolling] = useState(false)
+  const [error, setError] = useState("")
+
+  function handleRoll() {
+    const minNum = parseInt(min)
+    const maxNum = parseInt(max)
+    if (isNaN(minNum) || isNaN(maxNum)) {
+      setError("Введи оба числа")
+      return
+    }
+    if (minNum >= maxNum) {
+      setError("Минимум должен быть меньше максимума")
+      return
+    }
+    setError("")
+    setRolling(true)
+    setResult(null)
+
+    let count = 0
+    const interval = setInterval(() => {
+      setResult(Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum)
+      count++
+      if (count >= 20) {
+        clearInterval(interval)
+        setRolling(false)
+      }
+    }, 60)
+  }
+
   return (
     <main className="relative min-h-screen px-6 py-10 flex flex-col overflow-hidden">
       <div className="fixed inset-0 z-0 bg-gradient-to-br from-slate-50 via-white to-slate-100" />
@@ -217,12 +216,100 @@ export function LinkBioPage() {
           />
         </motion.div>
 
-        <motion.div className="space-y-3 py-8" variants={containerVariants}>
-          {links.map((link) => (
-            <motion.div key={link.title} variants={itemVariants}>
-              <LinkCard {...link} />
-            </motion.div>
-          ))}
+        <motion.div className="py-8 space-y-4" variants={containerVariants}>
+          {/* Inputs */}
+          <motion.div variants={itemVariants} className="flex gap-3">
+            <div className="flex-1">
+              <label className="block text-xs text-gray-500 mb-1 pl-1">От</label>
+              <input
+                type="number"
+                value={min}
+                onChange={e => setMin(e.target.value)}
+                placeholder="1"
+                className="w-full rounded-[16px] px-4 py-3 text-center text-gray-800 font-semibold text-lg outline-none placeholder:text-gray-300"
+                style={{
+                  background: "rgba(255,255,255,0.55)",
+                  backdropFilter: "blur(30px)",
+                  border: "1px solid rgba(255,255,255,0.6)",
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
+                }}
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-xs text-gray-500 mb-1 pl-1">До</label>
+              <input
+                type="number"
+                value={max}
+                onChange={e => setMax(e.target.value)}
+                placeholder="100"
+                className="w-full rounded-[16px] px-4 py-3 text-center text-gray-800 font-semibold text-lg outline-none placeholder:text-gray-300"
+                style={{
+                  background: "rgba(255,255,255,0.55)",
+                  backdropFilter: "blur(30px)",
+                  border: "1px solid rgba(255,255,255,0.6)",
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(0,0,0,0.06)",
+                }}
+              />
+            </div>
+          </motion.div>
+
+          {/* Error */}
+          {error && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-sm text-red-400">
+              {error}
+            </motion.p>
+          )}
+
+          {/* Result */}
+          <motion.div
+            variants={itemVariants}
+            className="flex items-center justify-center rounded-[20px] py-8"
+            style={{
+              background: "rgba(255,255,255,0.45)",
+              backdropFilter: "blur(40px) saturate(180%)",
+              border: "1px solid rgba(255,255,255,0.5)",
+              boxShadow: "inset 0 1px 1px rgba(255,255,255,0.9), 0 8px 32px rgba(0,0,0,0.06)",
+              minHeight: 120,
+            }}
+          >
+            <AnimatePresence mode="wait">
+              {result !== null ? (
+                <motion.span
+                  key={result}
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-7xl font-bold text-gray-800 tracking-tight"
+                  style={{ fontVariantNumeric: "tabular-nums" }}
+                >
+                  {result}
+                </motion.span>
+              ) : (
+                <motion.span key="placeholder" className="text-3xl text-gray-300 font-light">
+                  ?
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Button */}
+          <motion.div variants={itemVariants}>
+            <motion.button
+              onClick={handleRoll}
+              disabled={rolling}
+              className="w-full rounded-[20px] py-4 text-white font-semibold text-[15px] tracking-tight disabled:opacity-70"
+              style={{
+                background: rolling
+                  ? "linear-gradient(135deg, #a855f7, #ec4899)"
+                  : "linear-gradient(135deg, #7c3aed, #db2777)",
+                boxShadow: "0 8px 24px rgba(124,58,237,0.35), inset 0 1px 1px rgba(255,255,255,0.2)",
+              }}
+              whileHover={!rolling ? { scale: 1.02, y: -2 } : {}}
+              whileTap={!rolling ? { scale: 0.98, y: 0 } : {}}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            >
+              {rolling ? "Выбираем..." : "🎲 Разыграть"}
+            </motion.button>
+          </motion.div>
         </motion.div>
 
         <motion.div variants={itemVariants} className="pb-2">
