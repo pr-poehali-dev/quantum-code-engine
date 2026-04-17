@@ -51,9 +51,9 @@ function SpinningNumbers() {
       style={{
         width: 96,
         height: 96,
-        background: "rgba(255,255,255,0.6)",
+        background: "rgba(234,179,8,0.12)",
         backdropFilter: "blur(20px)",
-        boxShadow: "inset 0 2px 4px rgba(255,255,255,0.9), 0 0 0 2px rgba(255,255,255,0.6), 0 8px 32px rgba(120,119,198,0.15)",
+        boxShadow: "inset 0 1px 2px rgba(234,179,8,0.2), 0 0 0 1.5px rgba(234,179,8,0.35), 0 8px 32px rgba(234,179,8,0.15)",
       }}
     >
       {cols.map((col, ci) => (
@@ -66,7 +66,7 @@ function SpinningNumbers() {
             {[...digits, ...digits].map((d, i) => (
               <div
                 key={i}
-                className="flex items-center justify-center font-bold text-gray-700"
+                className="flex items-center justify-center font-bold text-yellow-300"
                 style={{ height: 28, fontSize: 18, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
               >
                 {d}
@@ -77,8 +77,8 @@ function SpinningNumbers() {
       ))}
 
       {/* fade top/bottom */}
-      <div className="absolute inset-x-0 top-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.9), transparent)" }} />
-      <div className="absolute inset-x-0 bottom-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(255,255,255,0.9), transparent)" }} />
+      <div className="absolute inset-x-0 top-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(13,13,26,0.85), transparent)" }} />
+      <div className="absolute inset-x-0 bottom-0 h-8 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(13,13,26,0.85), transparent)" }} />
     </div>
   )
 }
