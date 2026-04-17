@@ -35,7 +35,7 @@ const itemVariants = {
   },
 }
 
-function SpinningNumbers({ isDark }: { isDark: boolean }) {
+function SpinningNumbers({ isDark, numColor }: { isDark: boolean; numColor: string }) {
   const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   const cols = [
     { duration: 1.4, delay: 0 },
@@ -65,8 +65,8 @@ function SpinningNumbers({ isDark }: { isDark: boolean }) {
             {[...digits, ...digits].map((d, i) => (
               <div
                 key={i}
-                className="flex items-center justify-center font-bold text-purple-500"
-                style={{ height: 28, fontSize: 18, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
+                className="flex items-center justify-center font-bold"
+                style={{ height: 28, fontSize: 18, lineHeight: 1, fontVariantNumeric: "tabular-nums", color: numColor }}
               >
                 {d}
               </div>
@@ -179,7 +179,8 @@ export function LinkBioPage() {
     labelText: isDark ? "text-gray-400" : "text-gray-500",
     toggleBg: isDark ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.7)",
     toggleBorder: isDark ? "rgba(255,255,255,0.15)" : "rgba(124,58,237,0.25)",
-    resultNum: isDark ? "#a78bfa" : "#7c3aed",
+    resultNum: isDark ? "#ffffff" : "#111111",
+    spinnerNum: isDark ? "#ffffff" : "#111111",
     timeBg: isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.65)",
     timeBorder: isDark ? "rgba(255,255,255,0.1)" : "rgba(124,58,237,0.18)",
     timeText: isDark ? "text-white" : "text-gray-900",
@@ -253,7 +254,7 @@ export function LinkBioPage() {
         className="relative z-10 mx-auto max-w-[400px] w-full flex flex-col flex-1 justify-between"
       >
         <motion.div variants={itemVariants} className="pt-2 flex flex-col items-center text-center">
-          <SpinningNumbers isDark={isDark} />
+          <SpinningNumbers isDark={isDark} numColor={theme.spinnerNum} />
           <h1 className={`mt-5 text-xl font-semibold tracking-tight ${theme.headingText}`}>Генератор случайных чисел</h1>
           <p className={`mt-2 text-sm ${theme.subText}`}>Честный и прозрачный розыгрыш за секунды 🎲</p>
         </motion.div>
